@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Sketch Masters</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
+        <link href="/styles/reset.css" type="text/css" rel="stylesheet"/>
+        <link href="/styles/style.css" type="text/css" rel="stylesheet"/>
+        <link rel="stylesheet" media="screen and (max-width: 750px)" href="styles/narrow.css" />
+        <link rel="shortcut icon" type="image/x-icon" href="/images/web_icon.ico"/>
+        <script src="/script/command.js"></script>
+        <script src="/lib/jquery-2.2.1.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/script/client/timer-client.js"></script>
+        <script> var socket = io.connect();
+            window.onbeforeunload = function() {
+            return "Are you sure you want to leave the game?";
+        };
+        </script>
+        <script src="/script/client/connection-client.js"></script>
+        <script src="/script/client/drawing-client.js"></script>
+        <script src="/script/client/canvas-client.js"></script>
+        <script src="/script/client/chat-client.js"></script>
+        <script src="/script/client/game-client.js"></script>
+        <script src="/script/client/word.js"></script>
+    </head>
+    <body style="background-image: url('/images/background.png');">
+        <header>
+            <div id="headerLogo"><a href=""><img src="/images/sketchmasters_logo.png"/></a></div>
+            <div id="headerNav">
+                <ul>
+                    <li><a href="">about</a></li>
+                    <li><a href="">credits</a></li>
+                </ul>
+            </div>
+            <div id="headerTimer"><span id="time"><!-- Placeholder -->01:50</span></div>
+        </header>
+        <container id="contentWrap">
+            <container id="drawWrap">
+                <div id="canvasWrap">
+                    <div id="canvasTitleHeader"><h2>Placeholder</h2></div>
+                    <div id="canvasSizeWrap"><canvas id="drawCanvas"></canvas></div>
+                </div>
+                <div id="toolboxWrap">
+                    <div id="toolboxHeader"><h2>Toolbox</h2></div>
+                    <div id="toolboxContent">
+                        <div id="toolboxColours">
+                            <div class="toolBoxColour"></div>
+                            <div class="toolBoxColour"></div>
+                            <div class="toolBoxColour"></div>
+                            <div class="toolBoxColour"></div>
+                        </div>
+                        <div id="toolboxDrawSize"></div>
+                        <div id="toolboxEraser"></div>
+                    </div>
+                </div>
+            </container>
+            <container id="chatWrap">
+                <h1>Chat</h1>
+                <div id="chatContent"><br></div>
+                <div id="chatSend">
+                    <span id="chatMessageError"></span>
+                    <form id="chatForm">
+                        <input placeholder="Type a message here.." type="text" id="chatMessageBox"/>
+                        <input title="Send Message" type="submit" id="chatSubmitButton" style="background-image: url('/images/send_icon.png');" value=""/>
+                    </form>
+                </div>
+            </container>
+            <container id="usersWrap">
+                <h1>Connected Users</h1>
+                <div id="userList">
+                </div>
+                <div id="readyButton">
+                    <h2 id="ready">Ready</h2>
+                </div>
+                <div id="notReadyButton">
+                    <h2 id="notready">Not Ready</h2>
+                </div>
+            </container>
+        </container>
+    </body>
+</html>
+
+
+
