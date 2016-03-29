@@ -12,6 +12,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="/images/web_icon.ico"/>
         <script src="/script/command.js"></script>
         <script src="/lib/jquery-2.2.1.min.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="/script/client/timer-client.js"></script>
         <script> var socket = io.connect();
@@ -38,23 +39,14 @@
             <div id="headerTimer"><span id="time"><!-- Placeholder -->01:50</span></div>
         </header>
         <container id="contentWrap">
+            <div id="toolboxWrap">
+                <div id="toolboxRow"></div>
+                <div id="toolboxContent"></div>
+            </div>
             <container id="drawWrap">
                 <div id="canvasWrap">
                     <div id="canvasTitleHeader"><h2>Placeholder</h2></div>
                     <div id="canvasSizeWrap"><canvas id="drawCanvas"></canvas></div>
-                </div>
-                <div id="toolboxWrap">
-                    <div id="toolboxHeader"><h2>Toolbox</h2></div>
-                    <div id="toolboxContent">
-                        <div id="toolboxColours">
-                            <div class="toolBoxColour"></div>
-                            <div class="toolBoxColour"></div>
-                            <div class="toolBoxColour"></div>
-                            <div class="toolBoxColour"></div>
-                        </div>
-                        <div id="toolboxDrawSize"></div>
-                        <div id="toolboxEraser"></div>
-                    </div>
                 </div>
             </container>
             <container id="chatWrap">

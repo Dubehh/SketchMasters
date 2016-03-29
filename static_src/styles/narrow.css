@@ -46,15 +46,3 @@
 #canvasSizeWrap{
     height: 250px;
 }
-
-#toolboxWrap{
-    width: 100%;
-    float: left;
-}
-
-#toolboxColours, #toolboxEraser, #toolboxDrawSize{
-    padding: 0;
-    margin: 2px 0px 2px 0px;
-    width: 100%;
-    float: left;
-}

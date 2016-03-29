@@ -4,6 +4,8 @@
 
 $(function(){
 
+    const toolboxBar = $("#toolboxRow");
+    const toolbox = $("#toolboxContent");
     const drawCanvasID = "#drawCanvas";
     const canvas = document.getElementById(drawCanvasID.substring(1));
     const context = canvas.getContext('2d');
@@ -24,5 +26,14 @@ $(function(){
         context.stroke();
         context.closePath();
     }
+
+    toolboxBar.click(function(event){
+        toolbox.toggle("slide");
+        toolboxBar.animate({
+           'left' : "+=40px"
+        });
+    });
+
+
 
 });
