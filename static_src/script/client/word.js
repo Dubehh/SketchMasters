@@ -4,7 +4,6 @@
 
 $(function(){
 
-    var Word = "";
 
 });
 
