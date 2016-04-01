@@ -1,0 +1,32 @@
+
+body {
+    text-align: center;
+}
+
+#pageWrap {
+    width: 900px;
+    margin: 0 auto;
+}
+
+header img{
+    z-index: 1;
+    margin-top: -100px;
+    margin-right: 80px;
+}
+
+#menuWrap{
+    width: 100%;
+    text-align: center;
+    margin-top: -30px;
+    position: absolute;
+}
+
+nav{
+    z-index: 2;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.button:hover{
+    opacity: .8;
+}

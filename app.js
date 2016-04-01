@@ -14,7 +14,11 @@ var express = require('express'),
 server.listen(PORT); console.log('Server online on port: '+PORT);
 app.use(express.static(__dirname+'/static_src'));
 app.get('/', function(request, response){
-    response.sendFile(__dirname+"/index.html");
+    response.sendFile(__dirname+"/landing.html");
+});
+
+app.get('/game', function(request, response){
+   response.sendFile(__dirname+"/index.html");
 });
 
 require(SCRIPT_PATH+"command.js")();
