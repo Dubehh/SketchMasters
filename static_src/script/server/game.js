@@ -33,10 +33,12 @@ module.exports = function(io) {
 
     this.CheckStatus = function () {
         var users = GetUsers();
-        for(i = 0; i < users.length ; i++ )
-        {
-            console.log(users[i].Name);
+        for(i = 0; i < users.length ; i++ ) {
+            var user = users[i];
+            if(!user.Ready) return;
         }
+        // iedereen is ready
+        Start();
     };
 }
 

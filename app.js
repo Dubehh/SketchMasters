@@ -41,11 +41,11 @@ io.sockets.on('connection', function(socket){
 
     socket.on(Command.SEND_MESSAGE, function(Message){
         io.sockets.emit(Command.NEW_MESSAGE, {User: socket.User, Msg:Message });
-        Start(); //TODO temporary test
     });
 
     socket.on(Command.TOGGLE_READY, function(){
         socket.User.SetReady(socket.User.Ready ? false : true);
+        CheckStatus();
         io.sockets.emit(Command.USER_LIST, GetUsers());
     });
 
