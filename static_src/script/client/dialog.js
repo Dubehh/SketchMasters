@@ -11,7 +11,7 @@ $(function(){
         position: {
             my: "center",
             at: "center",
-            of: window,
+            of: window
         },
         show: 'blind',
         hide: 'blind',

@@ -26,6 +26,9 @@ module.exports = function(io) {
         return array[Math.floor(Math.random() * array.length)];
     };
 
+    this.Stop = function(){
+        StopTimer();
+    };
     this.CheckStatus = function () {
         var users = GetUsers();
         for(i = 0; i < users.length ; i++ ) {

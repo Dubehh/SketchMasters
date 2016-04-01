@@ -13,6 +13,7 @@ const Command = { NEW_USER: "new user" , /* Client */
     TIMER_START: "timer start", /* Server */
     GAME_STARTED: "game started", /* Server*/
     PENCIL_MOVE: "pencil move", /* Client */
+    TIME_UPDATED: "time updated", /* Server */
     PENCIL_UPDATE: "pencil update", /* Server */
     TOGGLE_READY: "toggle ready"}; /* Client*/
 

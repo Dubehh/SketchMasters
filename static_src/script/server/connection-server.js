@@ -29,4 +29,5 @@ module.exports = function(io){
         io.sockets.emit(Command.USER_DISCONNECTED, Socket.User);
         DeleteUser(Socket.User);
     };
+
 }

@@ -20,6 +20,7 @@ app.get('/', function(request, response){
 require(SCRIPT_PATH+"command.js")();
 require(SCRIPT_SERVER_PATH+"user.js")(io);
 require(SCRIPT_SERVER_PATH+"connection-server.js")(io);
+require(SCRIPT_SERVER_PATH+"timer.js")(io);
 require(SCRIPT_SERVER_PATH+"game.js")(io);
 
 io.sockets.on('connection', function(socket){
@@ -41,6 +42,7 @@ io.sockets.on('connection', function(socket){
 
     socket.on(Command.SEND_MESSAGE, function(Message){
         io.sockets.emit(Command.NEW_MESSAGE, {User: socket.User, Msg:Message });
+        StartTimer();
     });
 
     socket.on(Command.TOGGLE_READY, function(){
