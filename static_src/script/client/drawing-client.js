@@ -15,6 +15,7 @@ $(function(){
     var drawColor = "black";
     var drawSize = 5;
     var drawing = false;
+    var canDraw = false;
 
     var prevX, prevY, curX, curY;
 
@@ -24,6 +25,15 @@ $(function(){
         updateMouse(event);
     });
 
+    socket.on(Command.GAME_STARTED, function(data){
+          socket.emit(Command.GET_USER, function(callback){
+              if(callback.ID == data.User.ID){
+                  canDraw = true;    // cursor aanpassen TODO
+
+              }
+          });
+    });
+
     document.onmouseup = function(){ drawing = false; };
     $(drawCanvasID).mouseout(function(){ drawing = false; });
 
@@ -31,7 +41,7 @@ $(function(){
     * Word aangeroepen wanneer de muis beweegt binnen de canvas
     * */
     $(drawCanvasID).mousemove(function(event){
-        if(drawing){
+        if(canDraw && drawing){
             updateMouse(event);
             handleDrawing(prevX, prevY, curX, curY, drawColor, drawSize);
         }
