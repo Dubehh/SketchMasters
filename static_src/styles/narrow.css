@@ -46,3 +46,17 @@
 #canvasSizeWrap{
     height: 250px;
 }
+
+#toolboxWrap{
+    position: relative;
+    float: left;
+    width: 100%;
+}
+#toolboxRow{
+    display: none;
+}
+
+#toolboxContent{
+    display: block;
+    width: 100%;
+}

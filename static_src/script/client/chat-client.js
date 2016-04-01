@@ -45,9 +45,9 @@ $(document).ready(function(){
         appendMessage(sender, message);
     });
     /*
-    *  Checked of de ingevoerde tekst 'leeg' is. Wanneer er slechts witteruimte wordt gebruikt
-    *  dan returned de functie ook true.
-    * */
+     *  Checked of de ingevoerde tekst 'leeg' is. Wanneer er slechts witte ruimte wordt gebruikt
+     *  dan returned de functie ook true.
+     * */
     function isEmptyOrSpaces(str){
         return str === null || str.match(/^ *$/) !== null;
     }
