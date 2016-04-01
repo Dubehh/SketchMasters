@@ -41,6 +41,7 @@ io.sockets.on('connection', function(socket){
 
     socket.on(Command.SEND_MESSAGE, function(Message){
         io.sockets.emit(Command.NEW_MESSAGE, {User: socket.User, Msg:Message });
+        Start(); //TODO temporary test
     });
 
     socket.on(Command.TOGGLE_READY, function(){

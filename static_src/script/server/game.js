@@ -4,8 +4,10 @@
 
 module.exports = function(io){
 
+    const Words = ["Apple", "Banana", "House", "Money", "Obama", "Sixpack", "Beer", "Snor"];
     const State = { WAITING: "Waiting", STARTED: "started"};
 
+    var word;
     var drawingUser = null;
     var gameState = State.WAITING;
 
@@ -14,14 +16,19 @@ module.exports = function(io){
         User.SetDrawing(true);
     };
 
-    this.GetDrawer = function(){ return drawingUser; }
+    this.GetDrawer = function(){ return drawingUser; };
 
     this.Start = function(){
         gameState = State.STARTED;
+        word = RandomIndex(Words);
+        drawingUser = RandomIndex(GetUsers());
+        io.sockets.emit(Command.GAME_STARTED, { User: drawingUser, Word: word });
         //TODO start timer
-        //TODO select word
-        //TODO broadcast message
-    }
+    };
+
+    this.RandomIndex = function(array){
+        return array[Math.floor(Math.random() * array.length)];
+    };
 
 
 }

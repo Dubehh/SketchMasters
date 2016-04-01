@@ -9,6 +9,9 @@ $(function(){
     const drawCanvasID = "#drawCanvas";
     const canvas = document.getElementById(drawCanvasID.substring(1));
     const context = canvas.getContext('2d');
+    const arrowOpen = "&gt;";
+    const arrowClose = "&lt;";
+
 
     socket.on(Command.PENCIL_UPDATE, function(data){
         var drawColor = data.Color;
@@ -29,9 +32,8 @@ $(function(){
 
     toolboxBar.click(function(event){
         toolbox.toggle("slide");
-        toolboxBar.animate({
-           'left' : "+=40px"
-        });
+        toolboxBar.children().html(toolboxBar.children().html() == arrowOpen ? arrowClose : arrowOpen);
+
     });
 
 
