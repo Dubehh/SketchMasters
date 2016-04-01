@@ -95,5 +95,6 @@ $(function(){
             PrevX: prevX, PrevY: prevY, CurX: curX, CurY: curY};
         socket.emit(Command.PENCIL_MOVE, data);
     }
+
 });
 

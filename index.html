@@ -8,6 +8,7 @@
         <link href='https://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
         <link href="/styles/reset.css" type="text/css" rel="stylesheet"/>
         <link href="/styles/style.css" type="text/css" rel="stylesheet"/>
+        <link href="/styles/UI.css" type="text/css" rel="stylesheet"/>
         <link rel="stylesheet" media="screen and (max-width: 750px)" href="styles/narrow.css" />
         <link rel="shortcut icon" type="image/x-icon" href="/images/web_icon.ico"/>
         <script src="/script/command.js"></script>
@@ -26,8 +27,18 @@
         <script src="/script/client/chat-client.js"></script>
         <script src="/script/client/game-client.js"></script>
         <script src="/script/client/word.js"></script>
+        <script src="/script/client/dialog.js"></script>
     </head>
     <body style="background-image: url('/images/background.png');">
+    <div id="test" title="Login scherm">
+        <span class="ui-state-default"><span class="ui-icon ui-icon-info" style="float:left; margin:0 7px 0 0;"></span></span>
+        <div  style="margin-left: 23px; text-align: center">
+            <p>
+                <span style="color:red" id="error"></span><br>
+                <input type="text"  id="texttest">
+                <input type="submit" value="Login!" id="loginSub">
+            </p></div>
+    </div>
         <header>
             <div id="headerLogo"><a href=""><img src="/images/sketchmasters_logo.png"/></a></div>
             <div id="headerNav">

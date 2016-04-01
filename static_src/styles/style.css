@@ -371,7 +371,36 @@ header {
     opacity: .9;
 }
 
+.ui-dialog-osx {
+    -moz-border-radius: 0 0 8px 8px;
+    -webkit-border-radius: 0 0 8px 8px;
+    border-radius: 0 0 8px 8px; border-width: 0 8px 8px 8px;
+    z-index: 7;
+}
 
+.ui-dialog-titlebar-close {
+    visibility: hidden;
+}
+
+#loginSub{
+    cursor: pointer;
+    border-radius: 15px;
+    color: #5189D6;
+    font-size: 19px;
+}
+
+#loginSub:hover{
+    opacity: 0.3;
+    background-color: #5189D6;
+    color:white;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+#texttest{
+    border-radius: 15px;
+    color: white;
+    background-color: #5189D6;;
+}
 
 
 
