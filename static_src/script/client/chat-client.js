@@ -9,8 +9,10 @@ $(document).ready(function(){
     const chatBoxArea = $("#chatContent"); /* ID van de chatbox*/
     const chatBoxError = $("#chatMessageError"); /* ID van de locatie van de error */
 
+    var correctWord;
     var showingError = false;
     var messageID = 0;
+    var canSendMessage = true;
 
     /*
     *  Wordt aangeroepen wanneer de gebruiker zijn bericht 'submit'.
@@ -27,12 +29,33 @@ $(document).ready(function(){
                 displayError('Please insert a message.');
             } else if(isSpamming(message)){
                 displayError('Please don\'t spam!');
-            }else{
+            }else if(!canSendMessage) {
+                displayError("Als tekenaar mag je niet chatten!");
+            }
+            else{
                 chatBoxError.hide();
+                if(message.toLowerCase().indexOf(correctWord.toLowerCase()) != -1){
+                    socket.emit(Command.PLAYER_WON, callback);
+                    //Stuur commando met: user (callback)
+                    // in app.js ontvang commando en vuur functie in game.js af (iets van finish() ofzo)
+                    // in finish stuur je een bericht met dat er een winnaar is
+                    // wacht paar seconden
+                    // Reset game
+                    return;
+                }
                 socket.emit(Command.SEND_MESSAGE, message);
             }
         });
         chatBoxInput.val('');
+    });
+
+    socket.on(Command.GAME_STARTED, function(data) {
+        socket.emit(Command.GET_USER, function(callback){
+            if(callback.ID == data.User.ID){
+                canSendMessage = false;
+            }
+            correctWord = data.Word;
+        });
     });
 
     /*
@@ -40,7 +63,7 @@ $(document).ready(function(){
     * In de data wordt het bericht meegegeven en de sender.
     * */
     socket.on(Command.NEW_MESSAGE, function(data){
-        var sender = data.User.Name;
+        var sender = data.User === undefined ? null : data.User.Name;
         var message = data.Msg;
         appendMessage(sender, message);
     });
@@ -57,8 +80,8 @@ $(document).ready(function(){
     *  Hij scrollt ook automatisch mee zodat de gebruiker niet hoeft te scrollen.
     * */
     function appendMessage(Sender, Message){
-        var msg = "<span id='message_"+messageID+"' class='message'><b>"+Sender+"</b>: "+Message+"</span><br/>";
-        chatBoxArea.append(msg);
+        var msg = Sender == null ? Message + "hallo" : "<b>"+Sender+"</b>: "+Message;
+        chatBoxArea.append("<span id='message_"+messageID+"' class='message'>"+msg+"</span><br/>");
         chatBoxArea.animate({scrollTop: $("#message_"+messageID).offset().top }, 600);
         messageID++;
     }
@@ -71,6 +94,8 @@ $(document).ready(function(){
         if(Message.length > 30 && Message.indexOf(" ") == -1) return true;
         return false;
     }
+
+
 
     /*
     * Laat een error bericht zien en zorgt dat deze ook weer verdwijnt na x tijd.

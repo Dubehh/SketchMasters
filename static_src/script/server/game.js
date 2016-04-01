@@ -19,15 +19,25 @@ module.exports = function(io) {
         word = RandomIndex(Words);
         drawingUser = RandomIndex(GetUsers());
         io.sockets.emit(Command.GAME_STARTED, { User: drawingUser, Word: word });
-        //TODO start timer
+        StartTimer();
     };
+
 
     this.RandomIndex = function(array){
         return array[Math.floor(Math.random() * array.length)];
     };
 
+    this.Finish = function(Winner_User){
+        var Message = Winner_User.Name + " has won the game!";
+        io.sockets.emit(Command.NEW_MESSAGE, {Msg:Message});
+        // Wacht x seconden
+        Stop();
+
+    };
+
     this.Stop = function(){
         StopTimer();
+        gameState = State.WAITING;
     };
     this.CheckStatus = function () {
         var users = GetUsers();

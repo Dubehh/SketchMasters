@@ -15,7 +15,10 @@ const Command = { NEW_USER: "new user" , /* Client */
     PENCIL_MOVE: "pencil move", /* Client */
     TIME_UPDATED: "time updated", /* Server */
     PENCIL_UPDATE: "pencil update", /* Server */
-    TOGGLE_READY: "toggle ready"}; /* Client*/
+    TOGGLE_READY: "toggle ready", /* Client*/
+    GET_DRAWER: "get user", /* Client*/
+    PLAYER_WON: "player won", /* Client*/
+    GET_WORD: "get word"}; /* Client*/
 
 if(typeof module !== 'undefined'){
     module.exports = function(){

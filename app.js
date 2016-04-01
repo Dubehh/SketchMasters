@@ -44,6 +44,19 @@ io.sockets.on('connection', function(socket){
         io.sockets.emit(Command.NEW_MESSAGE, {User: socket.User, Msg:Message });
     });
 
+    socket.on(Command.GET_DRAWER, function(callback){
+        callback(GetDrawer());
+    });
+
+    socket.on(Command.GET_WORD, function(callback){
+        callback(GetWord());
+    });
+
+    socket.on(Command.PLAYER_WON, function(data){
+        console.log(data.Name+" heeft gewonnen");
+        Finish(data);
+    });
+
     socket.on(Command.TOGGLE_READY, function(){
         socket.User.SetReady(socket.User.Ready ? false : true);
         CheckStatus();

@@ -27,9 +27,9 @@ $(function(){
         var Word = data.Word;
         socket.emit(Command.GET_USER, function(callback){
             if(Drawer.ID == callback.ID){
-                // aant tekenen
+                setCanvasText("Teken een " + Word);
             }else{
-                // niet aant tekenen
+                setCanvasText(Drawer.Name + " is aan het tekenen");
             }
             hideContainers();
         });
