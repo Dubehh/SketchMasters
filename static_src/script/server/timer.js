@@ -27,7 +27,7 @@ module.exports = function(io){
             minutes = minutes < 10 ? "0" + minutes : minutes;
             seconds = seconds < 10 ? "0" + seconds : seconds;
             if (--timer < 0) {
-                timer = MAX_TIME;
+                StopTimer(); return;
             }
             io.sockets.emit(Command.TIME_UPDATED, {Minute: minutes, Second: seconds});
         }, 1000);
