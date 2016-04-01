@@ -39,9 +39,7 @@ module.exports = function(io){
     this.User = function(Nickname){
         this.Name = Nickname;
         this.ID = IDCount;
-        this.Drawing = false;
         this.Ready = false;
-        this.SetDrawing = function(Drawing){ this.Drawing = Drawing };
         this.SetReady = function(Ready) {this.Ready = Ready; };
         IDCount++;
         Users.push(this);

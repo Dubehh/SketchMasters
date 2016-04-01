@@ -10,10 +10,6 @@ $(function(){
     const userContainer = $("#usersWrap");
     const canvasTitle = $("#canvasTitleHeader");
 
-    var Drawer = null;
-    var Started = false;
-    var Word;
-
     readyButton.click(function(event){
         socket.emit(Command.TOGGLE_READY);
         readyButton.hide();
@@ -27,26 +23,22 @@ $(function(){
     });
 
     socket.on(Command.GAME_STARTED, function(data){
-        Started = true;
-        Drawer = data.User;
-        Word = data.Word;
-        var socketUser;
-        socket.emit(Command.GET_USER, function(callback){ socketUser = callback; });
-        if(socketUser == data.User){
-            //Dit is voor degene die tekent
-            setCanvasText("het woord is "+ Word);
-        }else{
-            //Ik ben niet aan het tekenen
-            setCanvasText("Ik ben niet aan t tekenen");
-
-        }
-        hideContainers();
-
+        var Drawer = data.User;
+        var Word = data.Word;
+        socket.emit(Command.GET_USER, function(callback){
+            if(Drawer.ID == callback.ID){
+                // aant tekenen
+            }else{
+                // niet aant tekenen
+            }
+            hideContainers();
+        });
     });
 
     function setCanvasText(text){
         canvasTitle.children().html(text);
     }
+
     function hideContainers(){
         userContainer.toggle("slide", { direction: 'right', mode: 'hide' }, function(){
             chatContainer.toggle("slide", { direction: 'right', mode: 'show' });

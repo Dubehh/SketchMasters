@@ -11,13 +11,8 @@ module.exports = function(io) {
     var drawingUser = null;
     var gameState = State.WAITING;
 
-    this.SetDrawer = function (User) {
-        drawingUser = User;
-        User.SetDrawing(true);
-    };
-
     this.GetDrawer = function(){ return drawingUser; };
-
+    this.GetWord = function() { return word; };
 
     this.Start = function () {
         gameState = State.STARTED;
@@ -37,7 +32,7 @@ module.exports = function(io) {
             var user = users[i];
             if(!user.Ready) return;
         }
-        // iedereen is ready
+        //Everyone ready
         Start();
     };
 }
