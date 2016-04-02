@@ -29,7 +29,6 @@ $(function(){
           socket.emit(Command.GET_USER, function(callback){
               if(callback.ID == data.User.ID){
                   canDraw = true;    // cursor aanpassen TODO
-
               }
           });
     });
