@@ -28,7 +28,8 @@ $(function(){
     socket.on(Command.GAME_STARTED, function(data){
           socket.emit(Command.GET_USER, function(callback){
               if(callback.ID == data.User.ID){
-                  canDraw = true;    // cursor aanpassen TODO
+                  canDraw = true;
+                  $(drawCanvasID).css('cursor', 'url("../../../../pencil_icon.png"),crosshair');
               }
           });
     });
