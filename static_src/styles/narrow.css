@@ -38,6 +38,11 @@
     width: 100%;
 }
 
+#toolboxContent{
+    display: block;
+    width: 100%;
+}
+
 #canvasWrap{
     height: 350px;
     width: 100%;
@@ -54,9 +59,4 @@
 }
 #toolboxRow{
     display: none;
-}
-
-#toolboxContent{
-    display: block;
-    width: 100%;
 }

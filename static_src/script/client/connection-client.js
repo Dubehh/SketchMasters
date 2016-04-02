@@ -6,30 +6,17 @@ $(document).ready(function(){
 
     const loginForm = $("#loginForm"); /* ID Van de Form*/
     const loginInput = $("#loginTextBar"); /* ID Van de text input box*/
+    const loginErrorContainer = $("#loginErrorContainer"); /* ID van de error box */
     const loginError = $("#loginErrorDisplay"); /* ID van de div waarin een error kan worden gedisplayed */
     const userDisplay = $("#userList"); /* ID van de div waar de users gedisplayed worden. */
     const loginSubmit = $("#loginSub");
-    const MAX_CHARS = 15;
+    const formContent = $("#loginFormContent");
+    const dialogDisplayName = "Choose a Username";
+    const MAX_CHARS = 15; /* Maximale username lengte */
+    const MIN_CHARS = 3;  /* Minimale username lengte */
 
+    var errorShown = false;
     initializeDialog();
-    /*
-    * Wanneer de user een 'account' heeft aangemaakt wordt er een object aan hem gekoppeld.
-    * Wanneer de user al bestaat dan wordt er een false callback gemaakt, anders een true.
-    * De user wordt ook teruggegeven met de callback.
-    * */
-    loginForm.submit(function(e){
-        e.preventDefault();
-        socket.emit(Command.NEW_USER, loginInput.val(), function(callback){
-            if(callback.NewUser){
-                if(callback.User == null) return;
-                loginForm.hide();
-            }else{
-                //Laat error zien dat naam al in gebruik is
-            }
-        });
-        loginInput.val('');
-    });
-
 
     /*
      *  Checked of de ingevoerde tekst 'leeg' is. Wanneer er slechts witteruimte wordt gebruikt
@@ -44,7 +31,7 @@ $(document).ready(function(){
     * Op deze manier voorkom je ook XSS scripting.
     * */
     function hasInvalidCharacters(str){
-        const banned = ["<",">","$","@","#","*","^",";"];
+        const banned = ["<",">","$","@","#","*","^",";","_","-","%"];
         for(i = 0; i < banned.length; i++)
             if(str.indexOf(banned[i]) != -1) return true;
         return false;
@@ -55,20 +42,23 @@ $(document).ready(function(){
     *  Wordt aangeroepen wanneer de user probeert in te loggen.
     *  Er wordt gekeken of de username al bestaat en of de invoer valide is.
     *  Als dat zo is dan mag de gebruiker joinen.
+    *  Wanneer de user een 'account' heeft aangemaakt wordt er een object aan hem gekoppeld.
     * */
     loginSubmit.click(function(event) {
         event.preventDefault();
         var username = loginInput.val();
         if (isEmptyOrSpaces(username)) {
-            displayError("Please fill in a Username.");
+            displayError("Please fill in a proper Username.");
         } else if(hasInvalidCharacters(username)){
             displayError("Your username contains invalid characters.")
-        } else if(username.length > MAX_CHARS){
-            displayError("Your username length is limited to "+MAX_CHARS+" characters.");
+        } else if(username.length > MAX_CHARS || username.length < MIN_CHARS) {
+            displayError("Your username should be between "+MIN_CHARS+" and " + MAX_CHARS + " characters.");
         } else {
+            loginErrorContainer.hide();
+            errorShown = false;
             socket.emit(Command.NEW_USER, loginInput.val(), function (callback) {
                 if(!callback.NewUser){
-                    displayError("This username is already used.");
+                    displayError("This username has already been used.");
                 }else{
                     if(callback.User == null) return;
                     loginForm.dialog('close');
@@ -79,6 +69,17 @@ $(document).ready(function(){
     });
 
     function displayError(Error){
+        if(errorShown){
+            if(Error != loginError.html()) loginError.html(Error)
+            return;
+        }
+        errorShown = true;
+        loginError.html(Error);
+        formContent.animate({ 'paddingTop' : "+=37px"}, 1000,
+            function(){
+                loginErrorContainer.show();
+                $('#loginFormContent').animate({ 'paddingTop' : "-=37px"}, 0);
+        });
 
     }
 
@@ -106,6 +107,7 @@ $(document).ready(function(){
      * Zet de configuratie van de dialog op
      * */
     function initializeDialog(){
+        loginForm.attr('title', dialogDisplayName);
         loginForm.dialog({
             modal: true,
             draggable: false,
@@ -118,7 +120,7 @@ $(document).ready(function(){
             show: 'blind',
             hide: 'blind',
             closeOnEscape: false,
-            width: 330,
+            width: 370,
             dialogClass: 'ui-dialog-osx'
         });
     }
