@@ -17,8 +17,9 @@ const Command = { NEW_USER: "new user" , /* Client */
     PENCIL_UPDATE: "pencil update", /* Server */
     TOGGLE_READY: "toggle ready", /* Client*/
     GET_DRAWER: "get user", /* Client*/
+    GET_STATE: "get state", /* Client */
     PLAYER_WON: "player won", /* Client*/
-    GET_WORD: "get word"}; /* Client*/
+    RESET_GAME: "reset game"} /* Server */
 
 if(typeof module !== 'undefined'){
     module.exports = function(){

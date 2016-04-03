@@ -5,10 +5,12 @@
 $(function(){
 
     const canvasSize = $("#canvasSizeWrap");
+    const colorClass = $(".colorPick");
     const drawCanvasID = "#drawCanvas";
     const canvas = document.getElementById(drawCanvasID.substring(1));
     const context = canvas.getContext('2d');
 
+    var currentColorInstance= null;
     var memoryCanvas = document.createElement('canvas');
     var memoryContext = memoryCanvas.getContext('2d');
 
@@ -25,13 +27,34 @@ $(function(){
         updateMouse(event);
     });
 
+    colorClass.click(function(event){
+        if(canDraw){
+            if(currentColorInstance != null){
+                currentColorInstance.css('opacity', '1');
+            }
+            if(currentColorInstance == $(this)) return;
+            currentColorInstance = $(this);
+            $(this).css('opacity', '.2');
+            drawColor = $(this).css('background-color');
+        }
+    });
+
     socket.on(Command.GAME_STARTED, function(data){
           socket.emit(Command.GET_USER, function(callback){
               if(callback.ID == data.User.ID){
                   canDraw = true;
-                  $(drawCanvasID).css('cursor', 'url("../../../../pencil_icon.png"),crosshair');
+                  $(colorClass).css('cursor', 'pointer');
+                  $(drawCanvasID).css('cursor', 'url("../../../../images/pencil_icon.png"), crosshair');
               }
           });
+    });
+
+    socket.on(Command.RESET_GAME, function(){
+        canDraw = false;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var errorIcon = 'url("../../../../images/error_icon.png"), crosshair';
+        $(drawCanvasID).css('cursor', errorIcon);
+        $(colorClass).css('cursor', errorIcon);
     });
 
     document.onmouseup = function(){ drawing = false; };

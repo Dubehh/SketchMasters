@@ -30,20 +30,15 @@ $(document).ready(function(){
             } else if(isSpamming(message)){
                 displayError('Please don\'t spam!');
             }else if(!canSendMessage) {
-                displayError("Als tekenaar mag je niet chatten!");
+                displayError("You cannot chat while drawing!");
             }
             else{
                 chatBoxError.hide();
                 if(message.toLowerCase().indexOf(correctWord.toLowerCase()) != -1){
-                    socket.emit(Command.PLAYER_WON, callback);
-                    //Stuur commando met: user (callback)
-                    // in app.js ontvang commando en vuur functie in game.js af (iets van finish() ofzo)
-                    // in finish stuur je een bericht met dat er een winnaar is
-                    // wacht paar seconden
-                    // Reset game
-                    return;
-                }
-                socket.emit(Command.SEND_MESSAGE, message);
+                    socket.emit(Command.PLAYER_WON, callback, function(finished){
+                        if(finished) socket.emit(Command.SEND_MESSAGE, message);
+                    });
+                }else socket.emit(Command.SEND_MESSAGE, message);
             }
         });
         chatBoxInput.val('');
@@ -55,7 +50,13 @@ $(document).ready(function(){
                 canSendMessage = false;
             }
             correctWord = data.Word;
+            appendMessage(null, "A new game has been started!");
         });
+    });
+
+    socket.on(Command.RESET_GAME, function(){
+        canSendMessage = false;
+        correctWord = null;
     });
 
     /*
@@ -80,7 +81,7 @@ $(document).ready(function(){
     *  Hij scrollt ook automatisch mee zodat de gebruiker niet hoeft te scrollen.
     * */
     function appendMessage(Sender, Message){
-        var msg = Sender == null ? Message + "hallo" : "<b>"+Sender+"</b>: "+Message;
+        var msg = Sender == null ? "<b style='color: Yellow; text-shadow: 0 0 3px black;'>"+Message+"</b>" : "<b>"+Sender+"</b>: "+Message;
         chatBoxArea.append("<span id='message_"+messageID+"' class='message'>"+msg+"</span><br/>");
         chatBoxArea.animate({scrollTop: $("#message_"+messageID).offset().top }, 600);
         messageID++;
@@ -88,14 +89,11 @@ $(document).ready(function(){
 
     /*
     * Returned true wanneer de gebruiker 'spammed'.
-    * //TODO Check meerdere vormen van spam
     * */
     function isSpamming(Message){
         if(Message.length > 30 && Message.indexOf(" ") == -1) return true;
         return false;
     }
-
-
 
     /*
     * Laat een error bericht zien en zorgt dat deze ook weer verdwijnt na x tijd.

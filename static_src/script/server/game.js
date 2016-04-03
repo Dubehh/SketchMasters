@@ -4,21 +4,22 @@
 
 module.exports = function(io) {
 
-    const Words = ["Apple", "Banana", "House", "Money", "Obama", "Sixpack", "Beer", "Snor"];
-    const State = { WAITING: "Waiting", STARTED: "started"};
+    const Words = ["Apple", "Banana", "House", "Money", "Obama", "Sixpack", "Beer", "Bicycle"];
+    const State = { WAITING: "Waiting", STARTED: "Started", ENDING: "Ending"};
 
-    var word;
     var drawingUser = null;
     var gameState = State.WAITING;
 
     this.GetDrawer = function(){ return drawingUser; };
-    this.GetWord = function() { return word; };
+    this.GetState = function() { return gameState; };
 
     this.Start = function () {
         gameState = State.STARTED;
-        word = RandomIndex(Words);
+        var word = RandomIndex(Words);
         drawingUser = RandomIndex(GetUsers());
         io.sockets.emit(Command.GAME_STARTED, { User: drawingUser, Word: word });
+        var users = GetUsers();
+        for(i = 0; i < users.length; i++) users[i].SetReady(false);
         StartTimer();
     };
 
@@ -27,26 +28,50 @@ module.exports = function(io) {
         return array[Math.floor(Math.random() * array.length)];
     };
 
-    this.Finish = function(Winner_User){
-        var Message = Winner_User.Name + " has won the game!";
-        io.sockets.emit(Command.NEW_MESSAGE, {Msg:Message});
-        // Wacht x seconden
-        Stop();
-
+    this.Finish = function(Winner){
+        if(gameState == State.ENDING) return;
+        var Message = Winner == null ? "Unfortunately no one guessed the word." : Winner.Name + " has guessed the word! Congrats!";
+        NotifyPlayers(Message);
+        setTimeout(function(){
+            Stop();
+        }, 5000);
     };
 
     this.Stop = function(){
-        StopTimer();
+        if(IsRunning()) StopTimer();
         gameState = State.WAITING;
+        io.sockets.emit(Command.RESET_GAME);
     };
+
+    this.CheckIngameJoin = function(Username){
+        if(gameState == State.STARTED) NotifyPlayers(Username+" has joined the game!");
+    };
+
+    this.CheckIngameQuit = function(Username){
+        if(gameState == State.STARTED) NotifyPlayers(Username+" has left the game!");
+    };
+
     this.CheckStatus = function () {
         var users = GetUsers();
-        for(i = 0; i < users.length ; i++ ) {
-            var user = users[i];
-            if(!user.Ready) return;
+        if(gameState == State.STARTED){
+            if(users.length < 2){
+                NotifyPlayers("There are no more players left to play the game with.");
+                setTimeout(function(){
+                    Stop();
+                }, 3000);
+            }
+        }else{
+            if(users.length < 2) return;
+            for(i = 0; i < users.length ; i++ ) {
+                var user = users[i];
+                if(!user.Ready) return;
+            }
+            Start();
         }
-        //Everyone ready
-        Start();
+    };
+
+    this.NotifyPlayers = function(Message){
+        io.sockets.emit(Command.NEW_MESSAGE, {Msg:Message});
     };
 }
 

@@ -34,10 +34,13 @@ io.sockets.on('connection', function(socket){
     });
     socket.on(Command.NEW_USER, function(Name_Input, callback){
         HandleConnecting(Name_Input, callback, socket);
+        CheckIngameJoin(Name_Input);
     });
 
     socket.on("disconnect", function(){
+        if(socket.User) CheckIngameQuit(socket.User.Name);
         HandleDisconnecting(socket);
+        CheckStatus();
     });
 
     socket.on(Command.GET_USER, function(callback){
@@ -48,16 +51,11 @@ io.sockets.on('connection', function(socket){
         io.sockets.emit(Command.NEW_MESSAGE, {User: socket.User, Msg:Message });
     });
 
-    socket.on(Command.GET_DRAWER, function(callback){
-        callback(GetDrawer());
-    });
+    socket.on(Command.GET_DRAWER, function(callback){ callback(GetDrawer()); });
+    socket.on(Command.GET_STATE, function(callback){ callback(GetState()); });
 
-    socket.on(Command.GET_WORD, function(callback){
-        callback(GetWord());
-    });
-
-    socket.on(Command.PLAYER_WON, function(data){
-        console.log(data.Name+" heeft gewonnen");
+    socket.on(Command.PLAYER_WON, function(data, callback){
+        callback(GetState().toLowerCase() == 'ending');
         Finish(data);
     });
 

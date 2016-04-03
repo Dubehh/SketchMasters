@@ -27,12 +27,31 @@ $(function(){
         var Word = data.Word;
         socket.emit(Command.GET_USER, function(callback){
             if(Drawer.ID == callback.ID){
-                setCanvasText("Teken een " + Word);
+                setCanvasText("Your word to draw: <span style='color: yellow'><b>" + Word+"</b></span>");
             }else{
-                setCanvasText(Drawer.Name + " is aan het tekenen");
+                setCanvasText("<span style='color: yellow'><b>"+Drawer.Name+" </b></span> is drawing..");
             }
             hideContainers();
         });
+    });
+
+    socket.emit(Command.GET_STATE, function(callback){
+        if(callback.toLowerCase() != 'waiting'){
+            hideContainers();
+            socket.emit(Command.GET_DRAWER, function(callback){
+               setCanvasText("<span style='color: yellow'><b>"+callback.Name+" </b></span> is drawing..");
+            });
+        }
+    });
+
+    socket.on(Command.RESET_GAME, function(){
+        notReadyButton.hide();
+        readyButton.show();
+        chatContainer.toggle("slide", { direction: 'right', mode: 'hide' }, function(){
+            userContainer.toggle("slide", { direction: 'right', mode: 'show' });
+        });
+        setCanvasText("Waiting for a game..");
+        $("#time").html("01:30");
     });
 
     function setCanvasText(text){

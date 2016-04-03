@@ -18,6 +18,12 @@ $(document).ready(function(){
     var errorShown = false;
     initializeDialog();
 
+    $(window).resize(function(){
+        if(loginForm.dialog('isOpen')){
+            loginForm.dialog('destroy');
+            initializeDialog();
+        }
+    });
     /*
      *  Checked of de ingevoerde tekst 'leeg' is. Wanneer er slechts witteruimte wordt gebruikt
      *  dan returned de functie ook true.
