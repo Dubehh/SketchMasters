@@ -34,11 +34,13 @@ $(document).ready(function(){
             }
             else{
                 chatBoxError.hide();
-                if(message.toLowerCase().indexOf(correctWord.toLowerCase()) != -1){
+                if(correctWord != null && message.toLowerCase().indexOf(correctWord.toLowerCase()) != -1){
                     socket.emit(Command.PLAYER_WON, callback, function(finished){
                         if(finished) socket.emit(Command.SEND_MESSAGE, message);
                     });
-                }else socket.emit(Command.SEND_MESSAGE, message);
+                }else{
+                    socket.emit(Command.SEND_MESSAGE, message);
+                }
             }
         });
         chatBoxInput.val('');
@@ -55,7 +57,7 @@ $(document).ready(function(){
     });
 
     socket.on(Command.RESET_GAME, function(){
-        canSendMessage = false;
+        canSendMessage = true;
         correctWord = null;
     });
 
